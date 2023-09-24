@@ -7,7 +7,7 @@ function Search() {
         <input
           type="text"
           placeholder="Pokemon name"
-          className=" w-2/4 border border-solid p-4"
+          className=" w-2/4 border border-solid p-4 text-black"
         />
       </div>
     </>

@@ -15,14 +15,17 @@ function PokemonList() {
   async function downloadPokemons() {
     setIsLoading(true);
     const response = await axios.get(pokedexUrl);
+    console.log("Response: ", response);
     const pokemonResults = response.data.results;
-    console.log(pokemonResults);
+    console.log("Pokemon Result: ", pokemonResults);
     setNextUrl(response.data.next);
     setPrevUrl(response.data.previous);
 
     const pokePromise = pokemonResults.map((pokemon) => axios.get(pokemon.url));
+    console.log("Pokemon Promise: ", pokePromise);
+
     const pokeData = await axios.all(pokePromise);
-    console.log(pokeData);
+    console.log("Pokemon Data: ", pokeData);
     const res = pokeData.map((pokeData) => {
       const pokemon = pokeData.data;
       return {
@@ -32,7 +35,7 @@ function PokemonList() {
         types: pokemon.types,
       };
     });
-    console.log(res);
+    console.log("Res after each pokemon in pokedata: ", res);
     setPokemonList(res);
     setIsLoading(false);
   }
