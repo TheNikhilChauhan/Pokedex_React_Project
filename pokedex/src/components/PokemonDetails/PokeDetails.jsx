@@ -1,26 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import usePokemonDetails from "../customHooks/usePokemonDetails";
 
 function PokeDetails() {
   const { id } = useParams();
-  const [pokemon, setPokemon] = useState({});
+  const [pokemon, pokemonListState] = usePokemonDetails(id);
 
-  async function downloadPokemon() {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    setPokemon({
-      id: response.data.id,
-      name: response.data.name,
-      image: response.data.sprites.other.dream_world.front_default,
-      height: response.data.height,
-      weight: response.data.weight,
-      types: response.data.types.map((t) => t.type.name),
-    });
-  }
-
-  useEffect(() => {
-    downloadPokemon();
-  }, []);
   return (
     <>
       <div className=" m-4 ml-32 mr-32 flex justify-center mt-12">
@@ -43,6 +29,18 @@ function PokeDetails() {
                     </button>
                   </div>
                 ))}
+            </div>
+            <div>
+              {pokemon.types && pokemon.similarPokemons && (
+                <div>
+                  More {pokemon.types[0]} type pokemons
+                  <ul className="text-white">
+                    {pokemon.similarPokemons.map((p) => (
+                      <li key={p.pokemon.url}>{p.pokemon.name}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

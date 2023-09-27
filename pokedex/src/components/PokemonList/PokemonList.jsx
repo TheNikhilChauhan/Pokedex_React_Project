@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+
 import Pokemon from "../Pokemon/Pokemon";
+import usePokemonHooks from "../customHooks/customHooks";
 
 function PokemonList() {
   // const [pokemonList, setPokemonList] = useState([]);
@@ -11,54 +12,7 @@ function PokemonList() {
 
   // const [nextUrl, setNextUrl] = useState("");
   // const [prevUrl, setPrevUrl] = useState("");
-
-  const [pokemonListState, setPokemonListState] = useState({
-    pokemonList: [],
-    isLoading: true,
-    pokedexUrl: "https://pokeapi.co/api/v2/pokemon",
-    nextUrl: "",
-    prevUrl: "",
-  });
-
-  async function downloadPokemons() {
-    // setIsLoading(true);
-    setPokemonListState({ ...pokemonListState, isLoading: true });
-
-    const response = await axios.get(pokemonListState.pokedexUrl);
-
-    const pokemonResults = response.data.results;
-
-    setPokemonListState((state) => ({
-      ...state,
-      nextUrl: response.data.next,
-      prevUrl: response.data.previous,
-    }));
-
-    const pokePromise = pokemonResults.map((pokemon) => axios.get(pokemon.url));
-
-    const pokeData = await axios.all(pokePromise);
-
-    const res = pokeData.map((pokeData) => {
-      const pokemon = pokeData.data;
-      return {
-        id: pokemon.id,
-        name: pokemon.name,
-        image: pokemon.sprites.other.dream_world.front_default,
-        types: pokemon.types,
-      };
-    });
-
-    setPokemonListState((state) => ({
-      ...state,
-      pokemonList: res,
-      isLoading: false,
-    }));
-  }
-
-  useEffect(() => {
-    downloadPokemons();
-  }, [pokemonListState.pokedexUrl]);
-
+  const [pokemonListState, setPokemonListState] = usePokemonHooks(false);
   return (
     <>
       <div className="text-center mt-12 font-bold">
@@ -68,6 +22,7 @@ function PokemonList() {
             ? "Loading..."
             : pokemonListState.pokemonList.map((p) => (
                 <Pokemon
+                  key={p.id}
                   id={p.id}
                   name={p.name}
                   image={p.image}
