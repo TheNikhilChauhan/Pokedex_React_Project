@@ -4,31 +4,21 @@ import Pokemon from "../Pokemon/Pokemon";
 import usePokemonHooks from "../customHooks/customHooks";
 
 function PokemonList() {
-  // const [pokemonList, setPokemonList] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [pokedexUrl, setPokedexUrl] = useState(
-  //   "https://pokeapi.co/api/v2/pokemon"
-  // );
-
-  // const [nextUrl, setNextUrl] = useState("");
-  // const [prevUrl, setPrevUrl] = useState("");
-  const [pokemonListState, setPokemonListState] = usePokemonHooks(false);
+  const DEFAULT_URL = "https://pokeapi.co/api/v2/pokemon";
+  const [pokemonListState, setPokemonListState] = usePokemonHooks(DEFAULT_URL);
   return (
     <>
       <div className="text-center mt-12 font-bold">
         Pokemon List
         <div className="flex flex-wrap m-0  justify-evenly">
-          {pokemonListState.isLoading
-            ? "Loading..."
-            : pokemonListState.pokemonList.map((p) => (
-                <Pokemon
-                  key={p.id}
-                  id={p.id}
-                  name={p.name}
-                  image={p.image}
-                  types={p.types}
-                />
-              ))}
+          {pokemonListState.pokemonList.map((pokemon) => (
+            <Pokemon
+              name={pokemon.name}
+              key={pokemon.id}
+              image={pokemon.image}
+              id={pokemon.id}
+            />
+          ))}
         </div>
         <div className="m-2 flex align-middle justify-center">
           <button
@@ -41,7 +31,6 @@ function PokemonList() {
               });
             }}
           >
-            {" "}
             Prev
           </button>
           <button

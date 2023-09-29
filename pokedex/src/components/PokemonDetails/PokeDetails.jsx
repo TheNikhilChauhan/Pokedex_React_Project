@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import usePokemonDetails from "../customHooks/usePokemonDetails";
 
-function PokeDetails() {
+function PokeDetails({ pokemonName }) {
   const { id } = useParams();
-  const [pokemon, pokemonListState] = usePokemonDetails(id);
+  const [pokemon, pokemonListState] = usePokemonDetails(id, pokemonName);
 
   return (
     <>
