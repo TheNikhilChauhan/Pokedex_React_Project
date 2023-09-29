@@ -9,7 +9,6 @@ function Pokedex() {
     <>
       <div className="flex flex-col align-middle justify-center text-center">
         <Search updateSearchTerm={setSearchTerm} />
-        {searchTerm}
 
         {!searchTerm ? (
           <PokemonList />
